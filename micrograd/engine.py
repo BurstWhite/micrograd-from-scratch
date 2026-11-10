@@ -90,6 +90,15 @@ class Value:
 
         return out
 
+    def sigmoid(self):
+        out = Value(1.0/(1+math.exp(-self.data)), (self, ))
+
+        def _backward():
+            self.grad += (out.data * (1.0-out.data)) * out.grad
+        out._backward = _backward
+
+        return out
+
     def __repr__(self):
         return f"Value(data={self.data})"
 
